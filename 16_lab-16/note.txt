@@ -1,65 +1,39 @@
-##################### upgrade from 1.26.1 to 1.26.4 ############################
-# procedure reference https://v1-26.docs.kubernetes.io/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade/
+##################### upgrade from 1.28 to 1.29 ############################
+# procedure reference https://kubernetes.io/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade/
 # https://kubernetes.io/docs/reference/using-api/deprecation-policy/
 # https://github.com/kubernetes/kubernetes/tree/master/CHANGELOG
 ### IMPORTANT : Snaphost VMs before start
 
 kubeadm version
 kubeadm upgrade plan
-yum install -y kubeadm-1.26.4-0 --disableexcludes=kubernetes
-kubeadm upgrade apply v1.26.4
-
-kubectl get nodes
-
-kubectl drain master --ignore-daemonsets
-yum install -y kubelet-1.26.4-0 kubectl-1.26.4-0 --disableexcludes=kubernetes
-
-sudo systemctl daemon-reload
-sudo systemctl restart kubelet
-
-kubectl uncordon master
-
-kubectl get nodes
-
-# on worker nodes
-yum install -y kubeadm-1.26.4-0 --disableexcludes=kubernetes
-kubeadm upgrade node
-
-# on master node
-kubectl drain worker1 --ignore-daemonsets
-
-# on worker nodes
-yum install -y kubelet-1.26.4-0 kubectl-1.26.4-0 --disableexcludes=kubernetes
-
-sudo systemctl daemon-reload
-sudo systemctl restart kubelet
-
-# on master node
-kubectl uncordon worker1
-
-kubectl get nodes
-
-##################### upgrade from 1.26.4 to 1.27.1 ############################
-# procedure reference https://v1-26.docs.kubernetes.io/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade/
-# https://kubernetes.io/docs/reference/using-api/deprecation-policy/
-# https://github.com/kubernetes/kubernetes/tree/master/CHANGELOG
-### IMPORTANT : Snaphost VMs before start
-
-##  upgrade from 1.26.4 to 1.27.1
-
-# on master node
 yum list --showduplicates kubeadm --disableexcludes=kubernetes
-yum list --showduplicates kubeadm --disableexcludes=kubernetes | grep 1.27
-kubeadm version
-kubeadm upgrade plan
-yum install -y kubeadm-1.27.1-0 --disableexcludes=kubernetes
+
+cat <<EOF | sudo tee /etc/yum.repos.d/kubernetes.repo
+[kubernetes]
+name=Kubernetes
+baseurl=https://pkgs.k8s.io/core:/stable:/v1.29/rpm/
+enabled=1
+gpgcheck=1
+gpgkey=https://pkgs.k8s.io/core:/stable:/v1.29/rpm/repodata/repomd.xml.key
+exclude=kubelet kubeadm kubectl cri-tools kubernetes-cni
+EOF
+
+# clean yum cache
+rm -rf /var/cache/yum/*
+yum clean metadata
+yum clean all
+
+yum update
+sudo yum install -y  kubeadm-1.29.0 --disableexcludes=kubernetes
 kubeadm version
 kubeadm upgrade plan
 
-kubeadm upgrade apply v1.27.1
+kubeadm upgrade apply v1.29.0
+
+kubectl get nodes
 
 kubectl drain master --ignore-daemonsets
-yum install -y kubelet-1.27.1-0 kubectl-1.27.1-0 --disableexcludes=kubernetes
+yum install -y kubelet-1.29.0 kubectl-1.29.0 --disableexcludes=kubernetes
 
 sudo systemctl daemon-reload
 sudo systemctl restart kubelet
@@ -69,24 +43,40 @@ kubectl uncordon master
 kubectl get nodes
 
 # on worker nodes
-yum install -y kubeadm-1.27.1-0 --disableexcludes=kubernetes
+
+kubeadm version
+yum list --showduplicates kubeadm --disableexcludes=kubernetes
+
+cat <<EOF | sudo tee /etc/yum.repos.d/kubernetes.repo
+[kubernetes]
+name=Kubernetes
+baseurl=https://pkgs.k8s.io/core:/stable:/v1.29/rpm/
+enabled=1
+gpgcheck=1
+gpgkey=https://pkgs.k8s.io/core:/stable:/v1.29/rpm/repodata/repomd.xml.key
+exclude=kubelet kubeadm kubectl cri-tools kubernetes-cni
+EOF
+
+# clean yum cache
+rm -rf /var/cache/yum/*
+yum clean metadata
+yum clean all
+
+yum update
+sudo yum install -y  kubeadm-1.29.0 --disableexcludes=kubernetes
+
 kubeadm upgrade node
 
 # on master node
 kubectl drain worker1 --ignore-daemonsets
 
 # on worker nodes
-yum install -y kubelet-1.27.1-0 kubectl-1.27.1-0 --disableexcludes=kubernetes
+yum install -y kubelet-1.29.0 --disableexcludes=kubernetes
 
 sudo systemctl daemon-reload
 sudo systemctl restart kubelet
 
 # on master node
 kubectl uncordon worker1
-kubectl get nodes
-
-# clean roll backup cluster
-ansible-playbook -i hosts.yml -e "kubernetes_version_rhel_package='1.27.1'" cluster_setup/clean_kubernetes.yml
-ansible-playbook -i hosts.yml cluster_setup/install_kubernetes.yml
 
 kubectl get nodes

@@ -8,7 +8,7 @@
 
 https://www.cncf.io/certification/cka/
 
-https://github.com/cncf/curriculum/blob/master/CKA_Curriculum_v1.26.pdf
+https://github.com/cncf/curriculum/blob/master/CKA_Curriculum_v1.28.pdf
 
 https://docs.linuxfoundation.org/tc-docs/certification/tips-cka-and-ckad
 
@@ -26,7 +26,7 @@ https://granulate.io/blog/a-deep-dive-into-kubernetes-scheduling/
 
 https://kubernetes.io/docs/home/
 
-https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.26
+https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.28
 
 https://kubernetes.io/docs/reference/kubectl/cheatsheet/
 
@@ -67,7 +67,7 @@ https://v1-26.docs.kubernetes.io/docs/tasks/administer-cluster/kubeadm/kubeadm-u
 ## RBAC
 https://kubernetes.io/docs/concepts/security/controlling-access/
 
-https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.26/
+https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.28/
 
 https://lisowski0925.medium.com/using-kubernetes-csrs-and-rbac-for-cluster-user-authentication-and-authorization-9df5498655cd
 
@@ -77,7 +77,7 @@ https://lisowski0925.medium.com/using-kubernetes-csrs-and-rbac-for-cluster-user-
 ## jq and jsonpath
 
 ## Préparation à l’examen
-https://github.com/cncf/curriculum/blob/master/CKA_Curriculum_v1.26.pdf
+https://github.com/cncf/curriculum/blob/master/CKA_Curriculum_v1.28.pdf
 
 https://docs.linuxfoundation.org/tc-docs/certification/tips-cka-and-ckad
 

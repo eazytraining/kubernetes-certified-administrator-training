@@ -3,8 +3,9 @@ kind: Ingress
 metadata:
   name: wordpress-ingress
   annotations:
-    spec.ingressClassName: "nginx"
+    ingress.kubernetes.io/rewrite-target: /
 spec:
+  ingressClassName: nginx
   rules:
   - host: wordpress.eazytraining.fr
     http:

@@ -1,6 +1,6 @@
 kubernetes official documentation : https://kubernetes.io/docs/home/
 deprecated api component : https://kubernetes.io/docs/reference/using-api/deprecation-guide/
-kubernetes api group : https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.26/
+kubernetes api group : https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.28/
 kubernetes example code : https://github.com/kubernetes/examples
 kubernetes api list : kubectl api-resources
 kubectl cli : https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands

@@ -4,8 +4,8 @@ metadata:
   name: pozos-website-ingress
   annotations:
     ingress.kubernetes.io/rewrite-target: /
-    kubernetes.io/ingress.class: "nginx" 
 spec:
+  ingressClassName: nginx
   rules:
   - host: "pozos.eazytraining.fr" 
     http:
