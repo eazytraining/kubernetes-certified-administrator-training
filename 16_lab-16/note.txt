@@ -1,4 +1,4 @@
-##################### upgrade from 1.28 to 1.29 ############################
+##################### upgrade from 1.28.1 to 1.29.1 ############################
 # procedure reference https://kubernetes.io/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade/
 # https://kubernetes.io/docs/reference/using-api/deprecation-policy/
 # https://github.com/kubernetes/kubernetes/tree/master/CHANGELOG
@@ -24,16 +24,16 @@ yum clean metadata
 yum clean all
 
 yum update
-sudo yum install -y  kubeadm-1.29.0 --disableexcludes=kubernetes
+sudo yum install -y  kubeadm-1.29.1 --disableexcludes=kubernetes
 kubeadm version
 kubeadm upgrade plan
 
-kubeadm upgrade apply v1.29.0
+kubeadm upgrade apply v1.29.1
 
 kubectl get nodes
 
 kubectl drain master --ignore-daemonsets
-yum install -y kubelet-1.29.0 kubectl-1.29.0 --disableexcludes=kubernetes
+yum install -y kubelet-1.29.1 kubectl-1.29.1 --disableexcludes=kubernetes
 
 sudo systemctl daemon-reload
 sudo systemctl restart kubelet
@@ -63,7 +63,7 @@ yum clean metadata
 yum clean all
 
 yum update
-sudo yum install -y  kubeadm-1.29.0 --disableexcludes=kubernetes
+sudo yum install -y  kubeadm-1.29.1 --disableexcludes=kubernetes
 
 kubeadm upgrade node
 
@@ -71,7 +71,7 @@ kubeadm upgrade node
 kubectl drain worker1 --ignore-daemonsets
 
 # on worker nodes
-yum install -y kubelet-1.29.0 --disableexcludes=kubernetes
+yum install -y kubelet-1.29.1 --disableexcludes=kubernetes
 
 sudo systemctl daemon-reload
 sudo systemctl restart kubelet
