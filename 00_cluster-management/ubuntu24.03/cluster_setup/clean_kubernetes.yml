@@ -1,0 +1,15 @@
+- hosts: all
+  become: true
+
+  tasks:
+    - name: reset kubeadm
+      command: kubeadm reset -f
+    - name: uninstall stack
+      package:
+        name: "{{ item }}"
+        state: absent
+      with_items: 
+        - kubelet
+        - kubectl
+        - kubeadm
+        - kubernetes-cni

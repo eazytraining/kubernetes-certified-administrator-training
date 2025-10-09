@@ -1,9 +1,9 @@
-# install_kubernetes_v1.32.sh
+# install_kubernetes_v1.33.sh
 #!/bin/bash
 
 ################ Installation de Kubeadm ###################
 
-### On master - https://v1-32.docs.kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/
+### On master - https://v1-33.docs.kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/
 
 # Désactivation du swap
 swapoff -a
@@ -31,16 +31,16 @@ apt-get install -y apt-transport-https ca-certificates curl gpg
 
 # Ajout de la clé GPG du dépôt Kubernetes 
 mkdir -p /etc/apt/keyrings
-curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.32/deb/Release.key | gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.33/deb/Release.key | gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
 
-# Ajout du dépôt Kubernetes v1.32
-echo "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.32/deb/ /" > /etc/apt/sources.list.d/kubernetes.list
+# Ajout du dépôt Kubernetes v1.33
+echo "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.33/deb/ /" > /etc/apt/sources.list.d/kubernetes.list
 
 # Mise à jour des paquets
 apt-get update
 
-# Installation de kubelet, kubeadm, kubectl en version 1.32.0-1.1
-VERSION=1.32.0-1.1
+# Installation de kubelet, kubeadm, kubectl en version 1.33.0-1.1
+VERSION=1.33.0-1.1
 apt-get install -y kubelet=${VERSION} kubeadm=${VERSION} kubectl=${VERSION}
 
 # Empêcher leur mise à jour automatique
@@ -84,7 +84,7 @@ echo 1 > /proc/sys/net/bridge/bridge-nf-call-ip6tables
 # kubeadm init sur le master
 # kubeadm join pour les workers
 # installation de Flannel avec interface enp0s8
-# 🔷 configure_cluster_k8s_v1.32.sh
+# 🔷 configure_cluster_k8s_v1.33.sh
 
 #!/bin/bash
 

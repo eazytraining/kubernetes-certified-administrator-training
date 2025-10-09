@@ -1,4 +1,4 @@
-##################### upgrade from 1.31 to 1.32 ################################
+##################### upgrade from 1.31 to 1.33 ################################
 ##################### release version ##########################################
 # procedure reference https://kubernetes.io/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade/
 # https://kubernetes.io/docs/reference/using-api/deprecation-policy/
@@ -14,37 +14,37 @@ kubeadm version
 kubeadm upgrade plan
 sudo apt-cache madison kubeadm
 
-# Changing The Kubernetes Package Repository: v1.31 to v1.32 in the following file
+# Changing The Kubernetes Package Repository: v1.31 to v1.33 in the following file
 ls /etc/apt/sources.list.d/
 
 ## Choose only one of the following two commands to update the apt repo according to the present file: kubernetes.list or pkgs_k8s_io.list
 cat <<EOF | sudo tee /etc/apt/sources.list.d/kubernetes.list
-deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.32/deb/ /
+deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.33/deb/ /
 EOF
 
 ## OR
 
 cat <<EOF | sudo tee /etc/apt/sources.list.d/pkgs_k8s_io.list
-deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.32/deb/ /
+deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.33/deb/ /
 EOF
 
 # Import the keyring if it doesn't exist
 if [ ! -f /etc/apt/keyrings/kubernetes-apt-keyring.gpg ]; then
   sudo mkdir -p /etc/apt/keyrings
-  curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.32/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+  curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.33/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
 fi
 # clean apt cache & update
 sudo apt clean
 sudo apt update
 
 apt-cache madison kubeadm
-apt install -y kubeadm=1.32.0-1.1 kubelet=1.32.0-1.1 kubectl=1.32.0-1.1
+apt install -y kubeadm=1.33.0-1.1 kubelet=1.33.0-1.1 kubectl=1.33.0-1.1
 sudo apt-mark hold kubelet kubeadm kubectl
 kubeadm version
 kubeadm upgrade plan
 
 # On the Master Node
-kubeadm upgrade apply v1.32.0 -y
+kubeadm upgrade apply v1.33.0 -y
 
 kubectl get nodes
 kubectl get pods -A
@@ -65,23 +65,23 @@ kubeadm upgrade plan
 apt-cache madison kubeadm
 
 
-# Changing The Kubernetes Package Repository: v1.31 to v1.32 in the following file
+# Changing The Kubernetes Package Repository: v1.31 to v1.33 in the following file
 ls /etc/apt/sources.list.d/
 
 cat <<EOF | sudo tee /etc/apt/sources.list.d/kubernetes.list
-deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.32/deb/ /
+deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.33/deb/ /
 EOF
 
 OR
 
 cat <<EOF | sudo tee /etc/apt/sources.list.d/pkgs_k8s_io.list
-deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.32/deb/ /
+deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.33/deb/ /
 EOF
 
 # Import the keyring if it doesn't exist
 if [ ! -f /etc/apt/keyrings/kubernetes-apt-keyring.gpg ]; then
   sudo mkdir -p /etc/apt/keyrings
-  curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.32/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+  curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.33/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
 fi
 # clean apt cache & update
 sudo apt clean
@@ -89,7 +89,7 @@ sudo apt update
 
 # Install the new version of kubeadm, kubelet, kubectl
 sudo apt update
-sudo apt install -y kubeadm=1.32.0-1.1 kubelet=1.32.0-1.1 kubectl=1.32.0-1.1
+sudo apt install -y kubeadm=1.33.0-1.1 kubelet=1.33.0-1.1 kubectl=1.33.0-1.1
 sudo apt-mark hold kubelet kubeadm kubectl
 
 kubeadm upgrade node

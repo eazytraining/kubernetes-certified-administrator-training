@@ -1,0 +1,4 @@
+- name: Deploy masters nodes
+  import_playbook: install_kubernetes_masters.yml
+- name: Deploy workers nodes
+  import_playbook: install_kubernetes_workers.yml

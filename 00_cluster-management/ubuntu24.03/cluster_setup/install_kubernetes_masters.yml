@@ -1,0 +1,15 @@
+---
+- name: Déploiement Kubernetes
+  hosts: masters
+  become: true
+  roles:
+    - role: ulrich-sun.kubernetes
+      version: v1.0.4
+      kubernetes_role: "master"
+      kubernetes_apiserver_advertise_address: "{{ hostvars[groups['masters'][0]]['ansible_host'] }}"
+      kubernetes_version: "{{ kubernetes_version | default('1.33.0') }}"
+      installation_method: "{{ installation_method | default('vagrant') }}"
+      kubernetes_join_command: "{{ kubernetes_join_command | default(omit) }}"
+  tasks:
+    - debug:
+        var: kubernetes_role
