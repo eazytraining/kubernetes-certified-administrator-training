@@ -28,3 +28,30 @@ kubectl apply -f pozos-website-ingress.yml
 # open your browser : http://pozos.eazytraining.fr:30080
 
 kubectl delete -f .
+
+
+#################### EXTERNAL NAME #####################################################
+
+kubectl run test --image busybox -- sleep 3600
+kubectl apply -f external-name.yml
+kubectl exec test -- nslookup my-service
+
+kubectl delete pod test
+kubectl delete -f external-name.yml
+
+#################### NETWORK POLICY #####################################################
+NB: Dans  un cluster ou c'est kube flannel qui est utilisé celà ne fonctionnera pas
+
+
+kubectl run frontend --image nginx --port 80
+kubectl run backend --image nginx --port 80
+
+kubectl expose pods frontend --port 80
+kubectl expose pods backend --port 80
+
+kubectl get all -o wide
+
+kubectl exec frontend -- curl backend
+kubectl exec backend -- curl frontend
+
+

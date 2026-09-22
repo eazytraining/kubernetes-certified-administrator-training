@@ -1,0 +1,22 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-all-egress-frontend
+spec:
+  podSelector: 
+    matchLabels:
+      run: frontend
+  egress:
+  # Règle 1 : Autoriser le trafic sortant vers le pod backend
+  - to:
+    - podSelector:
+        matchLabels:
+          run: backend
+  # Règle 2 : Autoriser la résolution DNS (Indispensable !)
+  - to:
+    ports:
+    - protocol: UDP
+      port: 53
+  policyTypes:
+  - Egress
