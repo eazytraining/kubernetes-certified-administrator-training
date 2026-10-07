@@ -1,7 +1,11 @@
 kubectl apply -f .
 kubectl get po -o wide
-kubectl delete -f .
+kubectl describe node worker1
 kubectl taint nodes worker1 tier=backend:NoSchedule
+
+kubectl get po -o wide
+kubectl delete -f .
+
 kubectl apply -f .
 kubectl get po -o wide
 kubectl delete -f .

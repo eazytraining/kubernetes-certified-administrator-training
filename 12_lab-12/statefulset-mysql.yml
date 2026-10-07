@@ -3,7 +3,7 @@ apiVersion: apps/v1
 metadata:
    name: mysql-deployment
 spec:
-   replicas: 1
+   replicas: 2
    selector:
       matchLabels:
         app: mysql

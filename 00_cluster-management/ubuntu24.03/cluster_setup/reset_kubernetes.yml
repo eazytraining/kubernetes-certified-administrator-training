@@ -1,0 +1,7 @@
+---
+# Reinstalle le cluster de zero sans recreer les VM : nettoyage complet de
+# tous les noeuds, puis installation du master et des workers.
+- name: Nettoyer Kubernetes
+  import_playbook: clean_kubernetes.yml
+- name: Installer Kubernetes
+  import_playbook: install_kubernetes.yml

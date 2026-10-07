@@ -8,7 +8,7 @@ kubectl apply -f .
 # install etcdctl https://github.com/etcd-io/etcd/releases
 kubectl -n kube-system get pod/etcd-master -o=jsonpath='{$.spec.containers[:1].image}'
 
-ETCD_VER=v3.6.0
+ETCD_VER=v3.6.6
 
 # choose either URL
 GOOGLE_URL=https://storage.googleapis.com/etcd
@@ -108,7 +108,7 @@ mv /etc/kubernetes/manifests/kube-apiserver.yaml ./
 mv /etc/kubernetes/manifests/etcd.yaml ./
 rm -rf /var/lib/etcd
 
-ETCDCTL_API=3 etcdctl --data-dir="/var/lib/etcd" snapshot restore /tmp/backup.db
+etcdutl snapshot restore /tmp/backup.db --data-dir=/var/lib/etcd
 
 mv kube-apiserver.yaml /etc/kubernetes/manifests/
 mv etcd.yaml /etc/kubernetes/manifests/

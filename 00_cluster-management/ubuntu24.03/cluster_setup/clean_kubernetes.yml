@@ -1,15 +1,76 @@
-- hosts: all
+---
+# Nettoie completement Kubernetes sur tous les noeuds, pour pouvoir
+# reinstaller le cluster sans recreer les VM (voir reset_kubernetes.yml).
+# kubeadm reset ne supprime ni les kubeconfig, ni la configuration CNI, ni
+# les interfaces Flannel, ni les regles iptables de kube-proxy : ces restes
+# cassent le reseau des pods (et donc le DNS) a la reinstallation.
+- name: Nettoyage Kubernetes
+  hosts: all
   become: true
 
   tasks:
-    - name: reset kubeadm
-      command: kubeadm reset -f
-    - name: uninstall stack
-      package:
-        name: "{{ item }}"
+    - name: Reinitialiser le noeud avec kubeadm
+      command: kubeadm reset -f --cri-socket unix:///var/run/containerd/containerd.sock
+      register: kubeadm_reset
+      failed_when: false
+      changed_when: kubeadm_reset.rc == 0
+
+    - name: Retirer le hold des paquets Kubernetes
+      command: apt-mark unhold kubelet kubeadm kubectl kubernetes-cni
+      failed_when: false
+      changed_when: false
+
+    - name: Desinstaller les paquets Kubernetes
+      apt:
+        name:
+          - kubelet
+          - kubeadm
+          - kubectl
+          - kubernetes-cni
         state: absent
-      with_items: 
-        - kubelet
-        - kubectl
-        - kubeadm
-        - kubernetes-cni
+        purge: true
+        lock_timeout: 600
+
+    # Les kubeconfig deviennent inutilisables (nouvelle CA a la
+    # reinstallation), y compris ceux crees pendant les labs
+    - name: Supprimer les fichiers residuels
+      file:
+        path: "{{ item }}"
+        state: absent
+      loop:
+        - /etc/kubernetes
+        - /var/lib/etcd
+        - /etc/cni/net.d
+        - /run/flannel
+        - /root/.kube
+        - /home/vagrant/.kube
+
+    - name: Supprimer les interfaces reseau Flannel
+      command: "ip link delete {{ item }}"
+      loop:
+        - cni0
+        - flannel.1
+      register: ip_link_delete
+      failed_when: false
+      changed_when: ip_link_delete.rc == 0
+
+    - name: Vider les regles iptables de kube-proxy et Flannel
+      shell: |
+        for cmd in iptables ip6tables; do
+          for table in filter nat mangle raw; do
+            $cmd -t $table -F
+            $cmd -t $table -X
+          done
+        done
+
+# Le worker attend ce fichier pour rejoindre le cluster : s'il restait,
+# il pourrait etre lu avant que le master n'en genere un nouveau
+- name: Suppression de l'ancienne commande join
+  hosts: masters
+  become: true
+
+  tasks:
+    - name: Supprimer la commande join partagee
+      file:
+        path: /vagrant/join-command.sh
+        state: absent

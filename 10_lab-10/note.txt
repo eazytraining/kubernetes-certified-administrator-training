@@ -1,9 +1,9 @@
 # source https://github.com/appscode/third-party-tools/blob/master/storage/nfs/README.md
 
 kubectl create ns storage
-kubectl apply -f https://raw.githubusercontent.com/appscode/third-party-tools/master/storage/nfs/artifacts/nfs-server.yaml
-kubectl apply -f https://raw.githubusercontent.com/appscode/third-party-tools/master/storage/nfs/artifacts/nfs-service.yaml
-kubectl -n storage exec -t -i $(kubectl -n storage get pod -l app=nfs-server -o jsonpath="{.items[0].metadata.name}") -- mkdir /exports/{mysql,wordpress}
+kubectl apply -f nfs/nfs-server.yml
+kubectl apply -f nfs/nfs-service.yml
+kubectl -n storage exec -t -i $(kubectl -n storage get pod -l app=nfs-server -o jsonpath="{.items[0].metadata.name}") -- rm -r /exports/{mysql,wordpress}
 kubectl -n storage get service/nfs-service -o jsonpath="{.spec.clusterIP}"
 # update deployment-wordpress.yml and deployment-mysql.yml with the IP get above
 kubectl apply -f .
@@ -13,6 +13,6 @@ kubectl -n storage exec -t -i $(kubectl -n storage get pod -l app=nfs-server -o 
 # add dns entry in hosts file wordpress.eazytraining.fr -> loadbalancer service ingress-nginx-controller external-IP
 
 kubectl delete -f .
-kubectl delete -f https://raw.githubusercontent.com/appscode/third-party-tools/master/storage/nfs/artifacts/nfs-service.yaml
-kubectl delete -f https://raw.githubusercontent.com/appscode/third-party-tools/master/storage/nfs/artifacts/nfs-server.yaml
+kubectl delete -f nfs/nfs-service.yml
+kubectl delete -f nfs/nfs-server.yml
 kubectl delete ns storage

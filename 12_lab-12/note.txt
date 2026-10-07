@@ -1,3 +1,10 @@
 kubectl apply -f .
 kubectl get pvc,pv
 kubectl delete -f .
+
+
+nfs_base_url=https://raw.githubusercontent.com/kubernetes-sigs/nfs-ganesha-server-and-external-provisioner/nfs-server-provisioner-1.8.0/deploy/kubernetes
+
+kubectl delete -f ${nfs_base_url}/deployment.yaml
+kubectl delete -f ${nfs_base_url}/rbac.yaml
+kubectl delete -f ${nfs_base_url}/class.yaml

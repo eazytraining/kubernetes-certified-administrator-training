@@ -4,7 +4,11 @@ kubectl get all -n metallb-system
 kubectl apply -f ip_address_pool/ipaddresspool.yml
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.7.0/deploy/static/provider/cloud/deploy.yaml
 
+kubectl get svc -n ingress-nginx -o wide 
+
 kubectl apply -f .
+
+kubectl get ingress
 
 kubectl get svc -n ingress-nginx -o wide
 # get external IP of ingress-nginx-controller service loadbalancer 
@@ -40,8 +44,8 @@ kubectl delete pod test
 kubectl delete -f external-name.yml
 
 #################### NETWORK POLICY #####################################################
-NB: Dans  un cluster ou c'est kube flannel qui est utilisé celà ne fonctionnera pas
-
+NB: Dans  un cluster ou c'est kube flannel qui est utilisé celà ne fonctionnera pas, car 
+flannel ne supporte pas les NetworkPolicy 
 
 kubectl run frontend --image nginx --port 80
 kubectl run backend --image nginx --port 80
@@ -54,4 +58,23 @@ kubectl get all -o wide
 kubectl exec frontend -- curl backend
 kubectl exec backend -- curl frontend
 
+Info: le curl passe
 
+kubectl apply -f networkpolicy/np-deny-all.yml
+kubectl get networkpolicy
+
+kubectl exec frontend -- curl backend
+kubectl exec backend -- curl frontend
+
+Info: le curl passe plus
+
+kubectl apply -f networkpolicy/backend-np.yml
+kubectl apply -f networkpolicy/frontend-np.yml
+kubectl get networkpolicy
+
+kubectl exec frontend -- curl backend
+kubectl exec backend -- curl frontend
+
+Info: le curl passe uniquement de frontend vers backend
+
+kubectl delete pod backend frontend

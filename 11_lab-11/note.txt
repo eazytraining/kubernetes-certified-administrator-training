@@ -10,6 +10,8 @@ kubectl apply -f pvc-wordpress.yml
 
 kubectl get pvc
 
+kubectl get pvc
+
 kubectl apply -f .
 
 kubectl delete -f .

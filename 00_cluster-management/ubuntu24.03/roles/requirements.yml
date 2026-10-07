@@ -9,3 +9,10 @@
 # Install kubenretes
 - src: geerlingguy.kubernetes
   version: "7.1.2"
+
+# Role Kubernetes corrige (dpkg lock, node-ip, flannel --iface,
+# masqueradeAll, nfs-common, kubeconfig admin reserve a root), installe
+# sous le nom "kubernetes"
+- src: https://github.com/eazytraining/ansible-roles-kubernetes.git
+  name: kubernetes
+  version: v1.0.11

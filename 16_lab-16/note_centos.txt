@@ -166,3 +166,4 @@ sudo systemctl restart kubelet
 kubectl uncordon worker1
 
 kubectl get nodes
+

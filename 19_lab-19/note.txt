@@ -4,12 +4,18 @@ kubectl get pods -n kubernetes-dashboard
 
 # create full admin serviceaccount
 
+kubectl get clusterrole
+
 kubectl apply -f dashboard-admin.yaml
-kubectl -n kubernetes-dashboard create token admin-user
+kubectl get clusterrolebinding
+kubectl get secret -n kubernetes-dashboard
+
+kubectl -n kubernetes-dashboard create token admin-user (approche conseillé, car ne persiste pas le token)
 kubectl get secret admin-user-secret -n kubernetes-dashboard  -o jsonpath="{.data.token}" | base64 --decode
 
 # create readonly serviceaccount
 kubectl apply -f dashboard-read-only.yaml
+kubectl -n kubernetes-dashboard create token read-only-user (approche conseillé, car ne persiste pas le token)
 kubectl get secret read-only-user-secret -n kubernetes-dashboard  -o jsonpath="{.data.token}" | base64 --decode
 
 # accessing dahboard
